@@ -1,0 +1,52 @@
+{
+  "regioes": [
+    {
+      "nome": "Córtex pré-frontal",
+      "grupo": "Lobo frontal",
+      "descricao": "Região associada a planejamento, controle executivo, tomada de decisão e memória de trabalho.",
+      "funcoes": ["Planejamento", "Tomada de decisão", "Controle executivo", "Memória de trabalho"]
+    },
+    {
+      "nome": "Hipocampo",
+      "grupo": "Sistema límbico",
+      "descricao": "Estrutura temporal medial associada à formação e organização de memórias.",
+      "funcoes": ["Formação de memória", "Aprendizado", "Navegação espacial"]
+    },
+    {
+      "nome": "Amígdala",
+      "grupo": "Sistema límbico",
+      "descricao": "Conjunto de núcleos relacionado ao processamento emocional e à saliência.",
+      "funcoes": ["Processamento emocional", "Saliência", "Aprendizagem associativa"]
+    },
+    {
+      "nome": "Tálamo",
+      "grupo": "Diencéfalo",
+      "descricao": "Estrutura central envolvida na retransmissão e integração de sinais sensoriais e corticais.",
+      "funcoes": ["Integração sensorial", "Comunicação cortical", "Atenção"]
+    },
+    {
+      "nome": "Cerebelo",
+      "grupo": "Encéfalo posterior",
+      "descricao": "Estrutura fundamental para coordenação motora, precisão temporal e aprendizagem motora.",
+      "funcoes": ["Coordenação", "Equilíbrio", "Aprendizagem motora"]
+    },
+    {
+      "nome": "Córtex visual",
+      "grupo": "Lobo occipital",
+      "descricao": "Conjunto de áreas corticais dedicado ao processamento de informação visual.",
+      "funcoes": ["Visão", "Forma", "Cor", "Movimento"]
+    },
+    {
+      "nome": "Córtex motor",
+      "grupo": "Lobo frontal",
+      "descricao": "Regiões corticais que participam do planejamento e execução do movimento voluntário.",
+      "funcoes": ["Movimento voluntário", "Planejamento motor"]
+    },
+    {
+      "nome": "Córtex somatossensorial",
+      "grupo": "Lobo parietal",
+      "descricao": "Áreas responsáveis pelo processamento cortical de tato, posição corporal e outras modalidades somáticas.",
+      "funcoes": ["Tato", "Propriocepção", "Integração corporal"]
+    }
+  ]
+}
