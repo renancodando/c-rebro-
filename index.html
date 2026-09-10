@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#090f0d">
+    <meta name="description" content="Biblioteca do Cérebro — exploração 3D do cérebro humano com atlas EBRAINS, literatura PubMed, neurônios NeuroMorpho e ferramentas anatômicas interativas.">
+    <title>Biblioteca do Cérebro</title>
+    <link rel="stylesheet" href="./css/estilo.css">
+    <link rel="stylesheet" href="./css/responsividade.css">
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js",
+            "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.180.0/examples/jsm/"
+        }
+    }
+    </script>
+</head>
+<body>
+    <div class="ruido"></div>
+
+    <div id="carregamento" class="carregamento" aria-live="polite">
+        <div class="carregamento-orbita">
+            <div class="carregamento-nucleo"></div>
+            <i></i><i></i><i></i>
+        </div>
+        <strong>Biblioteca do Cérebro</strong>
+        <span id="textoCarregamento">Preparando o atlas interativo</span>
+        <div class="barra-carregamento"><b id="barraCarregamento"></b></div>
+        <small id="progressoCarregamento">0%</small>
+    </div>
+
+    <header class="topo">
+        <button class="marca" id="voltarInicio" aria-label="Voltar para visão geral">
+            <span class="marca-simbolo"><i></i></span>
+            <span class="marca-texto">
+                <strong>Biblioteca do Cérebro</strong>
+                <small>atlas humano interativo</small>
+            </span>
+        </button>
+
+        <nav class="navegacao" aria-label="Modos de exploração">
+            <button class="navegacao-item ativo" data-modo="visao">Visão geral</button>
+            <button class="navegacao-item" data-modo="anatomia">Anatomia</button>
+            <button class="navegacao-item" data-modo="atividade">Atividade</button>
+            <button class="navegacao-item" data-modo="explodido">Desmontar</button>
+            <button class="navegacao-item" data-modo="corte">Corte</button>
+            <button class="navegacao-item" data-modo="imersao">Microscopia</button>
+        </nav>
+
+        <div class="topo-acoes">
+            <button class="botao-icone" id="abrirPesquisa" aria-label="Abrir pesquisa">⌕</button>
+            <button class="botao-contorno" id="abrirAtlas">Atlas real</button>
+            <button class="botao-contorno botao-fontes" id="abrirCiencia">Fontes</button>
+            <button class="botao-principal" id="alternarTelaCheia">Tela cheia</button>
+        </div>
+    </header>
+
+    <main class="aplicacao">
+        <aside class="lateral" id="lateral">
+            <div class="lateral-cabecalho">
+                <span>Biblioteca visual</span>
+                <button id="fecharMenu" aria-label="Fechar menu">×</button>
+            </div>
+
+            <div class="lista-modos">
+                <button class="modo-item ativo" data-modo="visao"><b>01</b><span><strong>Visão geral</strong><small>Cérebro completo e rotativo</small></span></button>
+                <button class="modo-item" data-modo="anatomia"><b>02</b><span><strong>Anatomia</strong><small>Estruturas internas e atlas</small></span></button>
+                <button class="modo-item" data-modo="atividade"><b>03</b><span><strong>Atividade neural</strong><small>Redes e impulsos simulados</small></span></button>
+                <button class="modo-item" data-modo="explodido"><b>04</b><span><strong>Desmontagem</strong><small>Hierarquia até 320 partes</small></span></button>
+                <button class="modo-item" data-modo="corte"><b>05</b><span><strong>Corte em tempo real</strong><small>Sagital, coronal e axial</small></span></button>
+                <button class="modo-item" data-modo="imersao"><b>06</b><span><strong>Microscopia</strong><small>Cérebro → sinapse</small></span></button>
+            </div>
+
+            <div class="separador"></div>
+            <span class="titulo-secao">Ferramentas</span>
+            <div class="ferramentas">
+                <button id="acaoRemontar">↺ <span>Remontar cérebro</span></button>
+                <button id="acaoIsolar">◎ <span>Isolar seleção</span></button>
+                <button id="acaoTransparencia">◌ <span>Transparência</span></button>
+                <button id="acaoRotacao">↻ <span>Rotação automática</span></button>
+                <button id="acaoResetarCamera">⌖ <span>Centralizar câmera</span></button>
+            </div>
+
+            <div class="fonte-dados" id="statusAtlasCompacto">
+                <span class="ponto-online carregando"></span>
+                <div>
+                    <strong>EBRAINS / siibra</strong>
+                    <small id="textoAtlasCompacto">Aguardando sincronização</small>
+                </div>
+            </div>
+        </aside>
+
+        <section class="palco" id="palco">
+            <canvas id="cenaCerebro" aria-label="Explorador tridimensional do cérebro"></canvas>
+            <div class="palco-luz"></div>
+            <div class="palco-vinheta"></div>
+
+            <div class="hero" id="hero">
+                <span class="sobretitulo">Neuroanatomia interativa</span>
+                <h1 id="tituloModo">O cérebro como<br>você nunca abriu.</h1>
+                <p id="descricaoModo">Explore uma reconstrução digital com desmontagem hierárquica, cortes, literatura científica e dados públicos de neurociência.</p>
+                <div class="hero-acoes">
+                    <button class="botao-principal" id="comecarExploracao">Começar a explorar <span>→</span></button>
+                    <button class="botao-contorno" id="demonstrarExplosao">Desmontar agora</button>
+                </div>
+                <div class="metricas">
+                    <div><strong>320</strong><span>partes visuais</span></div>
+                    <div><strong id="metricaRegioes">278+</strong><span>regiões via atlas</span></div>
+                    <div><strong>R$ 0</strong><span>APIs pagas</span></div>
+                </div>
+            </div>
+
+            <div class="identificacao-flutuante" id="identificacaoFlutuante">
+                <span>estrutura selecionada</span>
+                <strong id="estruturaFlutuante">Cérebro humano</strong>
+                <small id="origemFlutuante">modelo anatômico interativo</small>
+            </div>
+
+            <div class="controles-3d">
+                <span>Arrastar <b>girar</b></span>
+                <span>Scroll <b>zoom</b></span>
+                <span>Toque <b>selecionar</b></span>
+            </div>
+
+            <div class="controle-contextual painel-explosao" id="painelExplosao">
+                <div class="controle-cabecalho">
+                    <div><span>Desmontagem hierárquica</span><strong id="nomeNivelExplosao">Cérebro completo</strong></div>
+                    <b id="valorExplosao">0%</b>
+                </div>
+                <input type="range" min="0" max="100" value="0" id="controleExplosao" aria-label="Nível de desmontagem">
+                <div class="escala-explosao"><span>Completo</span><span>Hemisférios</span><span>Estruturas</span><span>Regiões</span><span>Partes</span></div>
+            </div>
+
+            <div class="controle-contextual painel-corte" id="painelCorte">
+                <div class="controle-cabecalho">
+                    <div><span>Plano de corte</span><strong id="nomePlanoCorte">Sagital</strong></div>
+                    <b id="valorCorte">0%</b>
+                </div>
+                <div class="seletor-plano">
+                    <button class="ativo" data-plano="sagital">Sagital</button>
+                    <button data-plano="coronal">Coronal</button>
+                    <button data-plano="axial">Axial</button>
+                </div>
+                <input type="range" min="-100" max="100" value="0" id="controleCorte" aria-label="Posição do corte">
+            </div>
+
+            <div class="controle-contextual painel-microscopia" id="painelMicroscopia">
+                <div class="controle-cabecalho">
+                    <div><span>Escala de exploração</span><strong id="nomeEscala">Cérebro</strong></div>
+                    <b id="valorEscala">1×</b>
+                </div>
+                <div class="trilha-escala">
+                    <button class="ativo" data-escala="0"><i></i><span>Cérebro</span></button>
+                    <button data-escala="1"><i></i><span>Região</span></button>
+                    <button data-escala="2"><i></i><span>Tecido</span></button>
+                    <button data-escala="3"><i></i><span>Neurônio</span></button>
+                    <button data-escala="4"><i></i><span>Sinapse</span></button>
+                </div>
+                <div class="micro-status" id="microStatus">Escolha uma estrutura e avance pela escala.</div>
+            </div>
+
+            <button class="menu-mobile" id="abrirMenu" aria-label="Abrir menu">☰</button>
+        </section>
+
+        <aside class="painel-direito" id="painelDireito">
+            <div class="painel-topo">
+                <div>
+                    <span id="rotuloPainel">Cérebro humano</span>
+                    <h2 id="nomeRegiao">Visão geral</h2>
+                </div>
+                <span class="selo" id="seloOrigem">3D</span>
+            </div>
+
+            <div class="abas" id="abasPainel">
+                <button class="aba ativo" data-aba="dados">Dados</button>
+                <button class="aba" data-aba="funcoes">Funções</button>
+                <button class="aba" data-aba="ebrains">EBRAINS</button>
+                <button class="aba" data-aba="estudos">Estudos</button>
+                <button class="aba" data-aba="genes">Genes</button>
+            </div>
+
+            <div id="conteudoPainel" class="conteudo-painel">
+                <p>Selecione uma estrutura diretamente no cérebro ou abra o Atlas real para consultar regiões do siibra/EBRAINS.</p>
+                <div class="numeros">
+                    <div><strong>86 bi</strong><span>neurônios aprox.</span></div>
+                    <div><strong>≈1,4 kg</strong><span>massa média</span></div>
+                    <div><strong>6</strong><span>modos 3D</span></div>
+                </div>
+                <div class="aviso-cientifico"><span>i</span><p>Visualizações estilizadas são identificadas como simulação. Máscaras carregadas do EBRAINS são marcadas como dados reais de atlas.</p></div>
+            </div>
+
+            <div class="atividade-mini">
+                <div class="titulo-linha"><span>Atividade visual</span><span class="ao-vivo"><i></i> simulação</span></div>
+                <canvas id="graficoAtividade"></canvas>
+            </div>
+
+            <div class="apis-status">
+                <div class="titulo-linha"><span>APIs gratuitas</span><button id="testarApis">Testar agora</button></div>
+                <div class="api-linha" data-api="siibra"><span>siibra / EBRAINS</span><i></i></div>
+                <div class="api-linha" data-api="neuromorpho"><span>NeuroMorpho</span><i></i></div>
+                <div class="api-linha" data-api="pubmed"><span>NCBI / PubMed</span><i></i></div>
+                <div class="api-linha" data-api="crossref"><span>Crossref</span><i></i></div>
+            </div>
+        </aside>
+    </main>
+
+    <section class="modal" id="painelPesquisa" aria-hidden="true">
+        <div class="modal-caixa pesquisa-caixa">
+            <div class="modal-topo"><div><span>Pesquisa universal</span><h2>Procure dentro do cérebro</h2></div><button id="fecharPesquisa">×</button></div>
+            <label class="campo-grande"><span>Estrutura, função, gene ou termo científico</span><input type="search" id="campoPesquisa" placeholder="Ex.: hipocampo, memória, córtex visual, BDNF"></label>
+            <div class="sugestoes" id="sugestoesPesquisa"></div>
+            <div class="acoes-pesquisa"><button class="botao-principal" id="pesquisarCiencia">Pesquisar PubMed + Crossref</button><button class="botao-contorno" id="buscarNoAtlas">Buscar no EBRAINS</button></div>
+            <div id="resultadoPesquisa" class="resultado-pesquisa"></div>
+        </div>
+    </section>
+
+    <section class="modal" id="painelAtlas" aria-hidden="true">
+        <div class="modal-caixa atlas-caixa">
+            <div class="modal-topo"><div><span>Atlas real</span><h2>siibra / EBRAINS</h2></div><button id="fecharAtlas">×</button></div>
+            <div class="atlas-resumo">
+                <div><span>Parcellation</span><strong id="nomeParcellation">Localizando Julich-Brain…</strong></div>
+                <div><span>Espaço</span><strong id="nomeEspaco">—</strong></div>
+                <div><span>Regiões</span><strong id="quantidadeRegioes">—</strong></div>
+                <div><span>Status</span><strong id="statusAtlas">Aguardando</strong></div>
+            </div>
+            <div class="atlas-acoes"><button class="botao-principal" id="sincronizarAtlas">Sincronizar regiões</button><button class="botao-contorno" id="materializarAtlas">Materializar atlas 3D</button></div>
+            <label class="campo-grande"><span>Filtrar regiões</span><input type="search" id="filtroRegioes" placeholder="Digite parte do nome de uma região"></label>
+            <div class="atlas-layout">
+                <div class="lista-regioes" id="listaRegioes"><div class="vazio">Sincronize o atlas para carregar as regiões reais.</div></div>
+                <div class="atlas-detalhe" id="atlasDetalhe">
+                    <span>Dados do atlas</span>
+                    <h3>Selecione uma região</h3>
+                    <p>Ao abrir uma região, a Biblioteca consulta os metadados e pode carregar sua máscara NIfTI diretamente do serviço siibra.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="modal" id="painelMascara" aria-hidden="true">
+        <div class="modal-caixa mascara-caixa">
+            <div class="modal-topo"><div><span>Volume anatômico real</span><h2 id="tituloMascara">Máscara EBRAINS</h2></div><button id="fecharMascara">×</button></div>
+            <div class="mascara-grade">
+                <article><div class="canvas-volume"><canvas id="corteSagital"></canvas></div><strong>Sagital</strong><input type="range" min="0" max="100" value="50" data-corte-nifti="sagital"></article>
+                <article><div class="canvas-volume"><canvas id="corteCoronal"></canvas></div><strong>Coronal</strong><input type="range" min="0" max="100" value="50" data-corte-nifti="coronal"></article>
+                <article><div class="canvas-volume"><canvas id="corteAxial"></canvas></div><strong>Axial</strong><input type="range" min="0" max="100" value="50" data-corte-nifti="axial"></article>
+            </div>
+            <p class="nota-modal">Os cortes desta janela são gerados no navegador a partir do volume NIfTI retornado pelo endpoint de mapas do siibra/EBRAINS.</p>
+        </div>
+    </section>
+
+    <section class="modal" id="painelCiencia" aria-hidden="true">
+        <div class="modal-caixa ciencia-caixa">
+            <div class="modal-topo"><div><span>Fontes abertas</span><h2>Camada científica</h2></div><button id="fecharCiencia">×</button></div>
+            <div class="grade-ciencia">
+                <article><strong>siibra / EBRAINS</strong><p>Atlas, parcellations, regiões, mapas NIfTI, features e vocabulários de genes.</p><span>REST · público</span></article>
+                <article><strong>NeuroMorpho.Org</strong><p>Metadados de reconstruções neuronais e arquivos SWC padronizados.</p><span>REST · público</span></article>
+                <article><strong>NCBI / PubMed</strong><p>Literatura biomédica consultada sob demanda, com limite conservador sem chave.</p><span>E-utilities · gratuito</span></article>
+                <article><strong>Crossref</strong><p>DOIs, autores e metadados bibliográficos pelo pool público.</p><span>REST · público</span></article>
+            </div>
+            <p class="nota-modal">A aplicação não depende de API paga nem inclui chave privada no código. Licenças específicas de datasets externos continuam pertencendo aos respectivos provedores.</p>
+        </div>
+    </section>
+
+    <div class="toast" id="toast" role="status"></div>
+    <div class="fallback-3d" id="fallback3D"><div class="fallback-forma"><i></i><i></i><i></i><i></i></div><span>O modo 3D precisa de WebGL e acesso ao módulo Three.js.</span></div>
+
+    <script type="module" src="./js/principal.js"></script>
+    <script>
+        setTimeout(() => {
+            const carregamento = document.getElementById('carregamento');
+            if (carregamento && !carregamento.classList.contains('oculto')) {
+                carregamento.classList.add('oculto');
+                const fallback = document.getElementById('fallback3D');
+                if (fallback) fallback.classList.add('visivel');
+            }
+        }, 12000);
+    </script>
+</body>
+</html>
