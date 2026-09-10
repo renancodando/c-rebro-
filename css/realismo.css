@@ -1,0 +1,113 @@
+:root {
+    --marfim-anatomico: #efe3d1;
+    --tecido: #b98d7d;
+    --tecido-profundo: #6a4740;
+    --ferrugem: #b65f45;
+    --sangue-seco: #5a2b2a;
+    --liquor: #6e9088;
+    --jade-envelhecido: #718f7d;
+}
+
+.palco::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: .22;
+    background:
+        linear-gradient(rgba(232,223,207,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(232,223,207,.025) 1px, transparent 1px);
+    background-size: 72px 72px;
+    mask-image: radial-gradient(circle at 58% 48%, #000 0 30%, transparent 76%);
+}
+
+.palco::after {
+    content: "MESA ANATÔMICA · COORDENADAS MNI QUANDO DISPONÍVEIS";
+    position: absolute;
+    right: 18px;
+    bottom: 13px;
+    z-index: 2;
+    color: rgba(232,223,207,.18);
+    font-size: 7px;
+    letter-spacing: .18em;
+    pointer-events: none;
+}
+
+.experiencias-menu { display: grid; gap: 3px; margin-bottom: 14px; }
+.experiencias-menu button { display: grid; grid-template-columns: 26px 1fr; align-items: center; gap: 7px; min-height: 32px; padding: 6px 8px; border-radius: 8px; background: transparent; color: #8f9d95; text-align: left; transition: .2s ease; }
+.experiencias-menu button:hover { background: rgba(182,95,69,.08); color: var(--marfim-anatomico); }
+.experiencias-menu i { font-style: normal; color: rgba(182,95,69,.72); font-size: 8px; letter-spacing: .08em; }
+.experiencias-menu span { font-size: 9px; }
+
+.painel-camadas { left: 20px; right: auto; bottom: 62px; width: min(610px, calc(100% - 40px)); }
+.camadas-botoes { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 6px; margin-top: 12px; }
+.camadas-botoes button { min-height: 34px; padding: 7px 9px; border: 1px solid rgba(232,223,207,.09); border-radius: 8px; background: rgba(255,255,255,.018); color: #87958d; font-size: 8px; text-align: left; transition: .2s ease; }
+.camadas-botoes button.ativo, .camadas-botoes button:hover { border-color: rgba(182,95,69,.4); background: rgba(182,95,69,.08); color: var(--marfim-anatomico); }
+
+.experiencia-viva { position: absolute; z-index: 18; left: 50%; top: 20px; width: min(620px, calc(100% - 40px)); padding: 15px 16px 13px; transform: translate(-50%,-16px); border: 1px solid rgba(182,95,69,.32); border-radius: 14px; background: linear-gradient(145deg, rgba(18,18,15,.91), rgba(12,19,16,.9)); box-shadow: 0 24px 80px rgba(0,0,0,.34), inset 0 0 38px rgba(182,95,69,.035); backdrop-filter: blur(18px); opacity: 0; visibility: hidden; transition: .28s ease; }
+.experiencia-viva.aberta { opacity: 1; visibility: visible; transform: translate(-50%,0); }
+.experiencia-viva-topo { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; }
+.experiencia-viva-topo span { display: block; color: #806f66; font-size: 7px; letter-spacing: .16em; text-transform: uppercase; }
+.experiencia-viva-topo strong { display: block; margin-top: 3px; font: 500 18px/1.1 Georgia, serif; color: var(--marfim-anatomico); }
+.experiencia-viva-topo button { width: 30px; height: 30px; border-radius: 50%; background: rgba(255,255,255,.03); color: #8e8178; font-size: 20px; }
+.experiencia-passo { display: grid; grid-template-columns: 42px 1fr; gap: 12px; align-items: start; margin-top: 13px; }
+.experiencia-passo > b { display: grid; place-items: center; width: 42px; aspect-ratio: 1; border: 1px solid rgba(182,95,69,.34); border-radius: 50%; color: var(--ferrugem); font: 500 13px Georgia, serif; }
+.experiencia-passo strong { font-size: 11px; font-weight: 560; }
+.experiencia-passo p { margin: 5px 0 0; color: #97a097; font-size: 9px; line-height: 1.5; }
+.experiencia-progresso { height: 2px; margin-top: 12px; background: rgba(255,255,255,.05); overflow: hidden; }
+.experiencia-progresso i { display: block; width: 0; height: 100%; background: linear-gradient(90deg, var(--sangue-seco), var(--ferrugem), var(--verdete)); transition: width .45s ease; }
+.experiencia-viva > small { display: block; margin-top: 8px; color: #5f6b64; font-size: 7px; line-height: 1.45; }
+
+.evidencias-caixa { width: min(1050px,100%); }
+.evidencias-intro { display: flex; align-items: center; justify-content: space-between; gap: 15px; padding: 14px; border: 1px solid var(--linha); border-radius: 12px; background: radial-gradient(circle at 12% 0%, rgba(182,95,69,.08), transparent 46%), rgba(255,255,255,.012); }
+.evidencias-intro strong, .evidencias-intro span { display: block; }
+.evidencias-intro strong { font: 500 21px Georgia, serif; }
+.evidencias-intro span { margin-top: 4px; color: #75847b; font-size: 8px; }
+.evidencias-filtros { display: flex; gap: 5px; overflow-x: auto; margin: 12px 0; padding-bottom: 3px; scrollbar-width: thin; }
+.evidencias-filtros button { flex: 0 0 auto; min-height: 34px; padding: 0 12px; border: 1px solid var(--linha); border-radius: 9px; background: transparent; color: #77867e; font-size: 8px; }
+.evidencias-filtros button.ativo { color: var(--marfim-anatomico); border-color: rgba(182,95,69,.4); background: rgba(182,95,69,.07); }
+.evidencias-grade { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 8px; min-height: 280px; max-height: 58vh; overflow-y: auto; padding-right: 4px; }
+.evidencia-card { position: relative; min-height: 118px; padding: 14px; border: 1px solid rgba(232,223,207,.085); border-radius: 12px; background: linear-gradient(145deg, rgba(255,255,255,.018), rgba(255,255,255,.004)); transition: .2s ease; }
+.evidencia-card:hover { border-color: rgba(113,143,125,.36); transform: translateY(-1px); }
+.evidencia-card > span { display: inline-flex; align-items: center; gap: 6px; color: var(--ferrugem); font-size: 7px; letter-spacing: .12em; text-transform: uppercase; }
+.evidencia-card > span::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: currentColor; box-shadow: 0 0 12px currentColor; }
+.evidencia-card strong { display: block; margin-top: 8px; color: #dfd5c5; font-size: 10px; line-height: 1.45; font-weight: 560; }
+.evidencia-card p { margin: 7px 0 0; color: #718078; font-size: 8px; line-height: 1.5; }
+.evidencia-card button { margin-top: 10px; padding: 6px 9px; border: 1px solid rgba(113,143,125,.24); border-radius: 7px; background: rgba(113,143,125,.045); color: #9eb2a4; font-size: 7px; }
+.evidencia-card[data-fonte="NeuroVault"] > span { color: #aa7f68; }
+.evidencia-card[data-fonte="DANDI"] > span { color: #819a84; }
+.evidencia-card[data-fonte="OpenNeuro"] > span { color: #8f8f78; }
+.evidencia-card[data-fonte*="Allen"] > span, .evidencia-card[data-fonte*="Gene"] > span { color: #b99872; }
+
+.api-linha { min-height: 28px; }
+.apis-status { max-height: 330px; overflow-y: auto; }
+.mascara-grade article::after { content: "NIfTI REAL"; position: absolute; top: 8px; right: 8px; padding: 3px 5px; border: 1px solid rgba(113,143,125,.24); border-radius: 5px; color: #839b88; font-size: 6px; letter-spacing: .1em; }
+.mascara-grade article { position: relative; }
+.painel-explosao::after { content: "No modo desmontado, arraste uma peça diretamente com o mouse ou toque."; display: block; margin-top: 9px; color: #5e6d64; font-size: 7px; }
+
+@media (max-width: 1380px) {
+    .topo-acoes #abrirEvidencias { display: none; }
+    .experiencias-menu span { font-size: 8px; }
+}
+@media (max-width: 1024px) {
+    .painel-camadas { left: 12px; width: calc(100% - 24px); }
+    .experiencia-viva { top: 12px; }
+}
+@media (max-width: 768px) {
+    .palco::after { display: none; }
+    .painel-camadas { bottom: 70px; }
+    .camadas-botoes { grid-template-columns: repeat(2,minmax(0,1fr)); }
+    .experiencia-viva { top: 58px; width: calc(100% - 24px); padding: 12px; }
+    .experiencia-viva-topo strong { font-size: 16px; }
+    .evidencias-intro { align-items: flex-start; flex-direction: column; }
+    .evidencias-grade { grid-template-columns: 1fr; max-height: 56vh; }
+    .evidencias-caixa { margin-top: 2vh; }
+}
+@media (max-width: 480px) {
+    .painel-camadas { bottom: 62px; }
+    .camadas-botoes { grid-template-columns: 1fr 1fr; gap: 4px; }
+    .camadas-botoes button { min-height: 30px; font-size: 7px; padding: 6px; }
+    .experiencia-passo { grid-template-columns: 34px 1fr; gap: 9px; }
+    .experiencia-passo > b { width: 34px; }
+    .evidencias-filtros button { padding-inline: 9px; font-size: 7px; }
+}
